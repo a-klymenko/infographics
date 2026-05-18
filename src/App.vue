@@ -1,28 +1,7 @@
 <script setup>
-import { RouterLink, RouterView, useRoute } from 'vue-router'
-import { computed } from 'vue'
-
-const route = useRoute()
-const showHeader = computed(() => !['/register', '/login'].includes(route.path))
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <div>
-    <header v-if="showHeader" class="app-header">
-      <RouterLink to="/levels" class="brand">Інфографіка</RouterLink>
-
-      <nav class="main-nav">
-        <RouterLink to="/levels">Рівні</RouterLink>
-        <RouterLink to="/library">Бібліотека</RouterLink>
-        <RouterLink to="/profile">Персонаж</RouterLink>
-        <RouterLink to="/project">Проєкт</RouterLink>
-        <RouterLink to="/gallery">Галерея</RouterLink>
-        <RouterLink to="/certificate">Сертифікат</RouterLink>
-      </nav>
-    </header>
-
-    <main :class="['app-main', { 'with-header': showHeader }]">
-      <RouterView :key="route.fullPath" />
-    </main>
-  </div>
+  <RouterView />
 </template>
