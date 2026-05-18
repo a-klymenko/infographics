@@ -1,0 +1,17 @@
+ЩО ДОДАНО
+
+1. src/lib/supabase.js — підключення до Supabase.
+2. appStore.js — реєстрація, вхід, прогрес, досягнення, роботи через Supabase.
+3. RegisterView.vue і LoginView.vue — працюють через Supabase Auth.
+4. LevelView.vue — зберігає прогрес у level_progress.
+5. ProjectView.vue — зберігає роботи в projects.
+6. GalleryView.vue — читає публічні роботи з Supabase.
+
+ВАЖЛИВО
+
+1. Локально створи .env за прикладом .env.example.
+2. У GitHub додай Variables:
+   VITE_SUPABASE_URL
+   VITE_SUPABASE_PUBLISHABLE_KEY
+3. У Supabase Authentication можна вимкнути підтвердження email, щоб реєстрація одразу відкривала сайт:
+   Authentication → Sign In / Providers → Email → Confirm email = off

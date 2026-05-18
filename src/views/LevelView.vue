@@ -44,14 +44,14 @@ const score = computed(() => {
   return Math.round(points.value.reduce((sum, item) => sum + item, 0) / level.value.tasks.length)
 })
 
-function onAnswered(value) {
+async function onAnswered(value) {
   points.value[currentTask.value] = value
 
   if (currentTask.value < level.value.tasks.length - 1) {
     currentTask.value += 1
   } else {
     finished.value = true
-    store.completeLevel(levelId, score.value)
+    await store.completeLevel(levelId, score.value)
   }
 }
 

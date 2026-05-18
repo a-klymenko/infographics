@@ -1,11 +1,11 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useAppStore } from '../stores/appStore'
 import { ducks } from '../data/ducks'
 
 const store = useAppStore()
 
-const publicWorks = [
+const exampleWorks = [
   {
     id: 'other-1',
     title: 'Історія розвитку інфографіки',
@@ -29,34 +29,22 @@ const publicWorks = [
     description: 'Приклад інфографіки з колірними схемами, контрастом і візуальними акцентами.',
     image: '',
     variant: 'colors'
-  },
-  {
-    id: 'other-4',
-    title: 'Статистика читабельності',
-    author: 'Данило Коваль',
-    description: 'Статистична інфографіка з діаграмами, відсотками та короткими поясненнями.',
-    image: '',
-    variant: 'bars'
-  },
-  {
-    id: 'other-5',
-    title: 'Як створити якісну інфографіку',
-    author: 'Ірина Бондар',
-    description: 'Процесна інфографіка з послідовністю етапів: тема, дані, структура, дизайн, перевірка.',
-    image: '',
-    variant: 'timeline'
-  },
-  {
-    id: 'other-6',
-    title: 'Порівняння типів графіків',
-    author: 'Максим Савчук',
-    description: 'Порівняльна інфографіка про стовпчикові, кругові, лінійні та точкові графіки.',
-    image: '',
-    variant: 'bars'
   }
 ]
 
 const myWorks = computed(() => store.projects)
+
+const publicWorks = computed(() => {
+  const ownIds = new Set(store.projects.map((item) => item.id))
+  return [
+    ...store.publicProjects.filter((item) => !ownIds.has(item.id)),
+    ...exampleWorks
+  ]
+})
+
+onMounted(() => {
+  store.loadPublicProjects()
+})
 </script>
 
 <template>
@@ -105,7 +93,14 @@ const myWorks = computed(() => store.projects)
 
       <div class="gallery-grid">
         <article v-for="work in publicWorks" :key="work.id" class="card">
-          <div :class="['fake-chart', 'preview-' + (work.variant || 'bars')]">
+          <img
+            v-if="work.image"
+            :src="work.image"
+            alt="Інфографіка"
+            style="width: 100%; border-radius: 16px; margin-bottom: 14px;"
+          />
+
+          <div v-else :class="['fake-chart', 'preview-' + (work.variant || 'bars')]">
             <template v-if="(work.variant || 'bars') === 'bars'">
               <div class="bar orange"></div>
               <div class="bar green"></div>

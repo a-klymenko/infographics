@@ -23,15 +23,17 @@ function handleFile(event) {
   reader.readAsDataURL(file)
 }
 
-function saveProject() {
-  store.addProject({
+async function saveProject() {
+  const ok = await store.addProject({
     title: title.value,
     description: description.value,
     image: image.value,
     isPublic: isPublic.value
   })
 
-  router.push('/gallery')
+  if (ok) {
+    router.push('/gallery')
+  }
 }
 </script>
 
@@ -39,6 +41,10 @@ function saveProject() {
   <section class="panel">
     <p class="caption">Підсумкова робота</p>
     <h1>Проєкт</h1>
+
+    <p v-if="store.errorMessage" style="color: var(--error);">
+      {{ store.errorMessage }}
+    </p>
 
     <div class="project-grid">
       <div>
@@ -84,7 +90,7 @@ function saveProject() {
         </div>
       </div>
     </div>
-    </section>
+  </section>
 
   <img class="corner-duck-img" :src="ducks.project" alt="Качечка проєкту" />
 </template>

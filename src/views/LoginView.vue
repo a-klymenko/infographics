@@ -7,17 +7,17 @@ import { ducks } from '../data/ducks'
 const router = useRouter()
 const store = useAppStore()
 
-const email = ref(store.email)
-const password = ref(store.password || '12345678')
-const error = ref('')
+const email = ref('')
+const password = ref('')
 
-function login() {
-  const ok = store.login({ email: email.value.trim(), password: password.value })
+async function login() {
+  const ok = await store.login({
+    email: email.value.trim(),
+    password: password.value
+  })
 
   if (ok) {
     router.push('/levels')
-  } else {
-    error.value = 'Невірний email або пароль'
   }
 }
 </script>
@@ -41,7 +41,9 @@ function login() {
         <input v-model="password" type="password" />
       </div>
 
-      <p v-if="error" style="color: var(--error);">{{ error }}</p>
+      <p v-if="store.errorMessage" style="color: var(--error);">
+        {{ store.errorMessage }}
+      </p>
 
       <button style="width: 100%;" @click="login">Увійти</button>
 

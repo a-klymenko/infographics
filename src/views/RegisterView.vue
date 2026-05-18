@@ -7,20 +7,25 @@ import { ducks } from '../data/ducks'
 const router = useRouter()
 const store = useAppStore()
 
-const name = ref(store.userName)
-const email = ref(store.email)
-const password = ref('12345678')
+const name = ref('')
+const email = ref('')
+const password = ref('')
 
-function register() {
-  if (name.value.trim().length < 2) return
+async function register() {
+  if (name.value.trim().length < 2 || email.value.trim().length < 4 || password.value.length < 6) {
+    store.setError('Заповніть ім’я, email і пароль від 6 символів.')
+    return
+  }
 
-  store.register({
+  const ok = await store.register({
     name: name.value.trim(),
     email: email.value.trim(),
     password: password.value
   })
 
-  router.push('/levels')
+  if (ok && store.registered) {
+    router.push('/levels')
+  }
 }
 </script>
 
@@ -48,6 +53,10 @@ function register() {
         <label>Пароль</label>
         <input v-model="password" type="password" />
       </div>
+
+      <p v-if="store.errorMessage" style="color: var(--error);">
+        {{ store.errorMessage }}
+      </p>
 
       <button style="width: 100%;" @click="register">Зареєструватися</button>
 
